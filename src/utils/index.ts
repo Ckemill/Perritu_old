@@ -1,3 +1,4 @@
+export * from "./guild";
 export * from "./chunk";
 export * from "./events";
 export * from "./prefix";

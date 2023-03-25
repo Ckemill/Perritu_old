@@ -20,7 +20,7 @@ export default command(meta, async ({ interaction }) => {
   const guildId = interaction.guildId as string;
   const guild = interaction.client.guilds.cache.get(guildId);
 
-  //if (!guild) return;
+  if (!guild) return interaction.reply(`You can't use this command here.`);
 
   const member = guild?.members.cache.get(interaction.member.user.id);
 

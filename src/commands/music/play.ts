@@ -22,7 +22,7 @@ export default command(meta, async ({ interaction }) => {
 
   if (!guild) return interaction.reply(`You can't use this command here.`);
 
-  const member = guild?.members.cache.get(interaction.member.user.id);
+  const member = guild.members.cache.get(interaction.member.user.id);
 
   const voiceChannel = member?.voice.channel;
 

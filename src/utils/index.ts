@@ -6,5 +6,4 @@ export * from "./replies";
 export * from "./command";
 export * from "./voice/join";
 export * from "./interaction";
-export * from "./voice/channel";
 export * from "./music/youtube/search";

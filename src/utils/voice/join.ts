@@ -1,12 +1,23 @@
 import { joinVoiceChannel } from "@discordjs/voice";
-import { channel } from "diagnostics_channel";
-import { VoiceBasedChannel, VoiceChannel } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  Message,
+  VoiceBasedChannel,
+  VoiceChannel,
+} from "discord.js";
 
-export function joinVoice(voiceChannel: VoiceBasedChannel) {
-  console.log(voiceChannel);
-  const connection = joinVoiceChannel({
-    channelId: voiceChannel.id,
-    guildId: voiceChannel.guild.id,
-    adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-  });
+export function joinVoice(
+  command: Message | ChatInputCommandInteraction,
+  voiceChannel: VoiceBasedChannel
+) {
+  try {
+    joinVoiceChannel({
+      channelId: voiceChannel.id,
+      guildId: voiceChannel.guild.id,
+      adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+    });
+  } catch (error) {
+    console.log(error);
+    return command.reply(`I couldn't join the voice channel.`);
+  }
 }

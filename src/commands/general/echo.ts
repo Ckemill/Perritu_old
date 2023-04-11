@@ -38,7 +38,7 @@ export default command(meta, ({ interaction }) => {
       content: `You have to be in a voice channel to use this command.`,
     });
 
-  joinVoice(interaction, voiceChannel);
+  joinVoice(voiceChannel);
 
   let collector = interaction.channel.createMessageCollector({
     filter: (message) => message.author.id === interaction.user.id,

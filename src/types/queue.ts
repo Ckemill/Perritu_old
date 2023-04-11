@@ -4,10 +4,10 @@ import { Song } from "./song";
 
 export type Queue = {
   songs: Song[];
-  textChannel: TextBasedChannel;
-  voiceChannel: VoiceChannel;
-  connection: VoiceConnection;
-  volume: number;
+  textChannel?: TextBasedChannel;
+  voiceChannel?: VoiceChannel;
+  connection?: VoiceConnection;
+  volume?: number;
   playing: boolean;
 };
 

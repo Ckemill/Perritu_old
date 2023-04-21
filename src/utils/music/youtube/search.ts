@@ -1,4 +1,4 @@
-export function search(query: string) {
+export function YTsearch(query: string) {
   // Initialize the matrix
   const video = {
     title: "",

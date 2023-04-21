@@ -22,6 +22,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "npm": "^9.6.5",
     "@discordjs/builders": "^1.4.0",
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^1.5.0",
@@ -42,6 +43,6 @@
     "jsonwebtoken": "^9.0.0",
     "promisify": "^0.0.3",
     "util": "^0.12.5",
-    "ytdl-core": "^4.11.3"
+    "ytdl-core": "^4.11.4"
   }
 }

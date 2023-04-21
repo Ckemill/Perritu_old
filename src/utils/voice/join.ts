@@ -1,6 +1,5 @@
-import { joinVoiceChannel } from "@discordjs/voice";
+import { joinVoiceChannel, VoiceConnection } from "@discordjs/voice";
 import { VoiceBasedChannel } from "discord.js";
-import { VoiceConnection } from "@discordjs/voice";
 
 export function joinVoice(voiceChannel: VoiceBasedChannel): VoiceConnection {
   return joinVoiceChannel({

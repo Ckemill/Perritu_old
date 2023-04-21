@@ -1,11 +1,13 @@
 import {
-  AudioPlayerStatus,
-  createAudioPlayer,
-  createAudioResource,
-} from "@discordjs/voice";
-import { command, getQueue, joinVoice } from "../../utils";
+  play,
+  YTurl,
+  command,
+  getQueue,
+  joinVoice,
+  checkVoiceChannel,
+} from "../../utils";
 import { SlashCommandBuilder } from "discord.js";
-import ytdl from "ytdl-core";
+import fs from "fs";
 import { Song } from "../../types";
 
 const meta = new SlashCommandBuilder()
@@ -14,28 +16,14 @@ const meta = new SlashCommandBuilder()
   .addStringOption((option) =>
     option
       .setName("song")
-      .setDescription("Provide the song name you want to search and reproduce.")
+      .setDescription("Provide the song name you want to search and play.")
       .setMinLength(1)
       .setMaxLength(2000)
       .setRequired(false)
   );
 
 export default command(meta, async ({ interaction }) => {
-  if (!interaction.guild || !interaction.member || !interaction.channel) {
-    return interaction.reply({
-      ephemeral: true,
-      content: `You can't use this command here.`,
-    });
-  }
-
-  const guildId = interaction.guildId as string;
-  const guild = interaction.client.guilds.cache.get(guildId);
-
-  if (!guild) return interaction.reply(`You can't use this command here.`);
-
-  const member = guild.members.cache.get(interaction.member.user.id);
-
-  const voiceChannel = member?.voice.channel;
+  const voiceChannel = checkVoiceChannel(interaction);
 
   if (!voiceChannel) {
     return interaction.reply({
@@ -44,52 +32,15 @@ export default command(meta, async ({ interaction }) => {
     });
   }
 
-  let queue = getQueue(interaction.guildId as string);
-
-  const song: Song = {
-    title: "test",
-    url: interaction.options.getString("song")!,
-    author: "test",
-    thumbnail: "test",
-    requester: interaction.user.id,
-  };
-
   const connection = joinVoice(voiceChannel);
 
-  queue?.songs.push(song);
+  const url = interaction.options.getString("song");
 
-  if (queue?.playing) {
-    return interaction.reply(`Added "${song.title}" to the queue.`);
-  }
+  if (!url) return interaction.reply(`you have to provide an url.`);
 
-  queue!.playing = true;
+  const stream = YTurl(url);
 
-  const player = createAudioPlayer();
+  const embed = await play(stream, connection);
 
-  const playSong = async (song: { title: string; url: string }) => {
-    const stream = await ytdl(song.url, { filter: "audioonly" });
-    const resource = createAudioResource(stream);
-    player.play(resource);
-
-    player.on(AudioPlayerStatus.Idle, () => {
-      queue?.songs.shift();
-
-      if (queue!.songs.length > 0) {
-        playSong(queue!.songs[0]);
-      } else {
-        queue!.playing = false;
-        connection.destroy();
-      }
-    });
-
-    player.on("error", (error) => {
-      console.error(error);
-    });
-
-    interaction.reply(`Playing "${song.title}"`);
-  };
-
-  playSong(song);
-
-  connection.subscribe(player);
+  interaction.reply({ embeds: [embed] });
 });

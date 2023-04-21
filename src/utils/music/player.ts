@@ -9,7 +9,7 @@ import { EmbedBuilder } from "@discordjs/builders";
 import { get } from "http";
 
 export async function play(
-  stream: internal.Readable,
+  stream: internal.Readable | string,
   connection: VoiceConnection
 ): Promise<EmbedBuilder> {
   const resource = createAudioResource(stream);

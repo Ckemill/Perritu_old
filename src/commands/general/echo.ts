@@ -1,11 +1,28 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { command, textToSpeech, joinVoice } from "../../utils";
+import {
+  command,
+  textToSpeech,
+  joinVoice,
+  checkVoiceChannel,
+  play,
+} from "../../utils";
 
 const meta = new SlashCommandBuilder()
   .setName("echo")
   .setDescription("I'll say in voice whatever you type.");
 
 export default command(meta, ({ interaction }) => {
+  const voiceChannel = checkVoiceChannel(interaction);
+
+  if (!voiceChannel) {
+    return interaction.reply({
+      ephemeral: true,
+      content: "You have to be in a voice channel to use this command.",
+    });
+  }
+
+  const connection = joinVoice(voiceChannel);
+
   if (!interaction.guild || !interaction.member || !interaction.channel) {
     return interaction.reply({
       ephemeral: true,
@@ -13,32 +30,12 @@ export default command(meta, ({ interaction }) => {
     });
   }
 
-  if (interaction.channel.type != 0) {
+  if (interaction.channel!.type != 0) {
     return interaction.reply({
       ephemeral: true,
       content: `I can't read messages on this channel.`,
     });
   }
-
-  const member = interaction.guild.members.cache.get(
-    interaction.member.user.id
-  );
-
-  if (!member)
-    return interaction.reply({
-      ephemeral: true,
-      content: `You can't use this command here..`,
-    });
-
-  const voiceChannel = member.voice.channel;
-
-  if (!voiceChannel)
-    return interaction.reply({
-      ephemeral: true,
-      content: `You have to be in a voice channel to use this command.`,
-    });
-
-  joinVoice(voiceChannel);
 
   let collector = interaction.channel.createMessageCollector({
     filter: (message) => message.author.id === interaction.user.id,
@@ -46,7 +43,9 @@ export default command(meta, ({ interaction }) => {
   });
 
   collector.on("collect", (message) => {
-    console.log(textToSpeech(message.content));
+    const stream = textToSpeech(message.member!.nickname || message.member!.displayName, message.content);
+    console.log();
+    play(stream, connection);
     collector.resetTimer();
   });
 

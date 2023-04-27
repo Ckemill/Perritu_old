@@ -54,7 +54,7 @@ export default command(meta, async ({ interaction }) => {
 
   if (!queue) {
     const queueConstruct: Queue = {
-      textChannel: interaction.channel!,
+      textChannel: interaction.channel,
       voiceChannel: voiceChannel,
       connection: null,
       songs: [],

@@ -15,7 +15,7 @@ export async function play(
 ) {
   const queue = Queues.get(guild!.id);
 
-  if (!song) {
+  if (!queue || !song) {
     queue!.playing = false;
     return;
   }
@@ -25,6 +25,7 @@ export async function play(
   const player = createAudioPlayer();
   queue?.connection?.subscribe(player);
   player.play(resource);
+  queue.player = player;
 
   const networkStateChangeHandler = (
     oldNetworkState: any,
@@ -55,6 +56,8 @@ export async function play(
     .setThumbnail(song.thumbnail.url);
 
   const message = await channel.send({ embeds: [embed] });
+
+  queue.message = message;
 
   return message
     .react("⏮️")

@@ -1,9 +1,9 @@
 import { SlashCommandBuilder } from "discord.js";
-import { checkVoiceChannel, command, Stop } from "../../utils";
+import { checkVoiceChannel, command, Skip } from "../../utils";
 
 const meta = new SlashCommandBuilder()
-  .setName("stop")
-  .setDescription("Stops the music and clears the current queue.");
+  .setName("skip")
+  .setDescription("Skips to the next song in queue if any.");
 
 export default command(meta, async ({ interaction }) => {
   const voiceChannel = checkVoiceChannel(interaction);
@@ -28,8 +28,7 @@ export default command(meta, async ({ interaction }) => {
       content: `I can't read messages on this channel.`,
     });
   }
+  Skip(interaction.guild!);
 
-  Stop(interaction.guild!);
-
-  interaction.reply("Music stopped.");
+  interaction.reply("Skipped to the next song.");
 });

@@ -16,8 +16,6 @@ export async function YTsearch(query: string): Promise<Song> {
 
   const video = results.data.items![0];
 
-  console.log(video);
-
   const info: Song = {
     title: video.snippet!.title!,
     channel: video.snippet!.channelTitle!,

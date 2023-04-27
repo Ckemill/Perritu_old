@@ -1,14 +1,16 @@
-import { Guild } from "discord.js";
+import { Guild, TextChannel } from "discord.js";
 import { Queues } from "../../../types";
+import { play } from "../../../utils";
 
-export async function Stop(guild: Guild) {
+export async function Skip(guild: Guild) {
   let queue = Queues.get(guild.id);
   if (!queue || !queue.player) return;
 
   try {
     await queue.player.stop();
     await queue.message?.delete();
-    Queues.delete(guild.id);
+    await queue.songs.shift();
+    play(queue.textChannel as TextChannel, guild, queue.songs[0]);
   } catch (error) {
     console.log(`Stop function... `, error);
   }

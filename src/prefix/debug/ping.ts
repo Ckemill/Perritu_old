@@ -1,4 +1,3 @@
-import { arch } from "os";
 import { prefix } from "../../utils";
 
 export default prefix("ping", ({ args, message }) => {

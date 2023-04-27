@@ -1,21 +1,27 @@
-import { ChatInputCommandInteraction, VoiceBasedChannel } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  VoiceBasedChannel,
+  Message,
+} from "discord.js";
 
-export function checkVoiceChannel(interaction: ChatInputCommandInteraction): VoiceBasedChannel {
-    if (!interaction.guild || !interaction.member || !interaction.channel) {
-        interaction.reply({
-          ephemeral: true,
-          content: `You can't use this command here.`,
-        });
-      }
-    
-      const guildId = interaction.guildId as string;
-      const guild = interaction.client.guilds.cache.get(guildId);
-    
-      if (!guild) interaction.reply(`You can't use this command here.`);
-    
-      const member = guild!.members.cache.get(interaction.member!.user.id);
-    
-      const voiceChannel = member!.voice.channel;
+export function checkVoiceChannel(
+  interaction: ChatInputCommandInteraction | Message
+): VoiceBasedChannel {
+  if (!interaction.guild || !interaction.member || !interaction.channel) {
+    interaction.reply({
+      ephemeral: true,
+      content: `You can't use this command here.`,
+    });
+  }
 
-      return voiceChannel!;
+  const guildId = interaction.guildId as string;
+  const guild = interaction.client.guilds.cache.get(guildId);
+
+  if (!guild) interaction.reply(`You can't use this command here.`);
+
+  const member = guild!.members.cache.get(interaction.member!.user.id);
+
+  const voiceChannel = member!.voice.channel;
+
+  return voiceChannel!;
 }

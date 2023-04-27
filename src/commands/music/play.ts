@@ -72,7 +72,7 @@ export default command(meta, async ({ interaction }) => {
       interaction.deferReply();
       interaction.deleteReply();
     } catch (error) {
-      console.log(`Could not join voice  hannel: ${error}`);
+      console.log(`Could not join voice channel: ${error}`);
       Queues.delete(interaction.guildId);
       return interaction.reply(`Could not join voice channel.`);
     }

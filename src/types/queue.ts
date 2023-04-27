@@ -1,16 +1,20 @@
 import { VoiceConnection } from "@discordjs/voice";
-import { TextBasedChannel, VoiceChannel } from "discord.js";
+import {
+  TextBasedChannel,
+  VoiceBasedChannel,
+  ChatInputCommandInteraction,
+} from "discord.js";
 import { Song } from "./song";
 
-export type Queue = {
-  songs: Song[];
+export interface Queue {
   textChannel?: TextBasedChannel;
-  voiceChannel?: VoiceChannel;
-  connection?: VoiceConnection;
-  volume?: number;
+  voiceChannel?: VoiceBasedChannel;
+  connection?: null | VoiceConnection;
+  songs: Song[];
+  volume: number;
   playing: boolean;
-};
+}
 
-export type Queues = {
-  [key: string]: Queue;
-};
+const Queues = new Map<ChatInputCommandInteraction["guildId"], Queue>();
+
+export { Queues };

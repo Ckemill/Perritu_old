@@ -7,7 +7,6 @@ export * from "./command";
 export * from "./voice/join";
 export * from "./interaction";
 export * from "./music/player";
-export * from "./music/queues";
 export * from "./music/youtube/url";
 export * from "./voice/voiceChannel";
 export * from "./music/youtube/search";

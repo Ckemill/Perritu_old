@@ -1,7 +1,7 @@
 export interface Song {
-    title: string;
-    url: string;
-    author: string;
-    thumbnail: string;
-    requester: string;
-  }
+  title: string;
+  url: string;
+  thumbnail: any;
+  channel: string;
+  published: Date;
+}

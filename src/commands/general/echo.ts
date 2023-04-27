@@ -37,15 +37,20 @@ export default command(meta, ({ interaction }) => {
     });
   }
 
+  interaction.channel.send("Hola");
+
   let collector = interaction.channel.createMessageCollector({
     filter: (message) => message.author.id === interaction.user.id,
     time: 300000,
   });
 
   collector.on("collect", (message) => {
-    const stream = textToSpeech(message.member!.nickname || message.member!.displayName, message.content);
+    const stream = textToSpeech(
+      message.member!.nickname || message.member!.displayName,
+      message.content
+    );
     console.log();
-    play(stream, connection);
+    //play(stream, connection);
     collector.resetTimer();
   });
 

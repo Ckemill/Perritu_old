@@ -3,6 +3,7 @@ import { Keys } from "../types";
 const keys: Keys = {
   clientToken: process.env.BOT_TOKEN ?? "nil",
   testGuild: process.env.TEST_GUILD ?? "nil",
+  youtubeApiKey: process.env.YT_API_KEY ?? "nil",
 };
 
 if (Object.values(keys).includes("nil"))

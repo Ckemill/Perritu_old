@@ -1,6 +1,7 @@
+import { Readable } from "stream";
 import ytdl from "ytdl-core";
 
-export function YTurl(url: string) {
+export async function YTurl(url: string): Promise<Readable> {
   const stream = ytdl(url, {
     filter: "audioonly",
     quality: "highestaudio",

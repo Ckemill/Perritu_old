@@ -1,22 +1,30 @@
 import {
-  VoiceConnection,
   createAudioPlayer,
   AudioPlayerStatus,
   createAudioResource,
 } from "@discordjs/voice";
-import internal from "stream";
+import { ChatInputCommandInteraction, TextChannel } from "discord.js";
+import { Song, Queues } from "../../types";
+import { YTurl } from "../../utils";
 import { EmbedBuilder } from "@discordjs/builders";
-import { get } from "http";
 
 export async function play(
-  stream: internal.Readable | string,
-  connection: VoiceConnection
-): Promise<EmbedBuilder> {
+  channel: TextChannel,
+  guild: ChatInputCommandInteraction["guild"],
+  song: Song
+) {
+  const queue = Queues.get(guild!.id);
+
+  if (!song) {
+    queue!.playing = false;
+    return;
+  }
+
+  const stream = await YTurl(song.url);
   const resource = createAudioResource(stream);
   const player = createAudioPlayer();
+  queue?.connection?.subscribe(player);
   player.play(resource);
-
-  connection.subscribe(player);
 
   const networkStateChangeHandler = (
     oldNetworkState: any,
@@ -26,7 +34,7 @@ export async function play(
     clearInterval(newUdp?.keepAliveInterval);
   };
 
-  connection.on("stateChange", (oldState, newState) => {
+  queue?.connection!.on("stateChange", (oldState, newState) => {
     const oldNetworking = Reflect.get(oldState, "networking");
     const newNetworking = Reflect.get(newState, "networking");
 
@@ -34,15 +42,28 @@ export async function play(
     newNetworking?.on("stateChange", networkStateChangeHandler);
   });
 
-  function embed(): Promise<EmbedBuilder> {
-    const embed = new EmbedBuilder();
-    return new Promise((resolve) => {
-      player.on(AudioPlayerStatus.Playing, () => {
-        embed.setTitle("Hola");
-        resolve(embed);
-      });
-    });
-  }
+  player
+    .on(AudioPlayerStatus.Idle, () => {
+      queue?.songs.shift();
+      play(channel, guild, queue!.songs[0]);
+    })
+    .on("error", (error) => console.error(error));
 
-  return embed();
+  const embed = new EmbedBuilder()
+    .setTitle(song.title)
+    .setURL(song.url)
+    .setThumbnail(song.thumbnail.url);
+
+  const message = await channel.send({ embeds: [embed] });
+
+  return message
+    .react("⏮️")
+    .then(() => message.react("⏹️"))
+    .then(() => message.react("⏯️"))
+    .then(() => message.react("⏭️"))
+    .then(() => message.react("🔀"))
+    .then(() => message.react("🔁"))
+    .catch((error) =>
+      console.error("One of the emojis failed to react:", error)
+    );
 }

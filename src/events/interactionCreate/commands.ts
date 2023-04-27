@@ -21,6 +21,8 @@ export default event(
         throw new Error("Command not found...");
       }
 
+      console.log(`${interaction.user.username} used ${commandName} command.`);
+
       await command.exec({
         client,
         interaction,

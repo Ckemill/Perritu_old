@@ -11,7 +11,6 @@ export default event(
     const queue = Queues.get(guildId);
 
     if (voiceChannel && voiceChannel.members.size === 1) {
-      console.log("Alone in voiceChannel");
       setTimeout(() => {
         if (voiceChannel.members.size === 1) {
           if (!queue?.playing) {

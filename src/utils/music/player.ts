@@ -17,6 +17,7 @@ export async function play(
 
   if (!queue || !song) {
     queue!.playing = false;
+    Queues.delete(guild!.id);
     return;
   }
 

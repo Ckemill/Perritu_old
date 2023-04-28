@@ -11,4 +11,5 @@ export * from "./music/youtube/url";
 export * from "./voice/voiceChannel";
 export * from "./music/actions/stop";
 export * from "./music/actions/skip";
+export * from "./music/actions/pause";
 export * from "./music/youtube/search";

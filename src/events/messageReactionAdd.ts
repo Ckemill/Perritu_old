@@ -1,4 +1,4 @@
-import { event, Stop, Skip } from "../utils";
+import { event, Stop, Skip, Pause } from "../utils";
 import { Queues } from "../types";
 
 export default event(
@@ -28,7 +28,7 @@ export default event(
           console.log(`${user.username} stoped the music reacting.`);
           break;
         case "⏯️":
-          //Stop(guild);
+          Pause(guild);
 
           queue.textChannel?.send(`This action haven't been implemented yet`);
           console.log(`${user.username} play/paused music reacting.`);

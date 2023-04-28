@@ -1,7 +1,7 @@
-import { prefix, checkVoiceChannel, Stop } from "../../utils";
+import { Pause, prefix, checkVoiceChannel } from "../../utils";
 import { ChannelType } from "discord.js";
 
-export default prefix("stop", async ({ args, message }) => {
+export default prefix("pause", async ({ args, message }) => {
   const voiceChannel = checkVoiceChannel(message);
 
   if (!voiceChannel)
@@ -12,7 +12,7 @@ export default prefix("stop", async ({ args, message }) => {
   if (message.channel.type != ChannelType.GuildText)
     return message.reply(`You can't use this command here.`);
 
-  Stop(message.guild!);
+  Pause(message.guild!);
 
-  message.reply(`Stopped the music.`);
+  message.reply(`Song paused/unpaused`);
 });

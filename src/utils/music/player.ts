@@ -18,6 +18,8 @@ export async function play(
   if (!queue || !song) {
     queue!.playing = false;
     Queues.delete(guild!.id);
+    channel.send(`The queue has ended.`);
+    console.log(`Queue end.`);
     return;
   }
 

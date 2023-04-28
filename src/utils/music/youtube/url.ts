@@ -1,12 +1,8 @@
-import { Readable } from "stream";
-import ytdl from "ytdl-core";
+import play from "play-dl";
+import { YouTubeStream, SoundCloudStream } from "play-dl";
 
-export async function YTurl(url: string): Promise<Readable> {
-  const stream = ytdl(url, {
-    filter: "audioonly",
-    quality: "lowestaudio",
-    highWaterMark: 50,
-  });
+export async function YTurl(url: string): Promise<YouTubeStream | SoundCloudStream> {
+  const stream = await play.stream(url);
 
   return stream;
 }

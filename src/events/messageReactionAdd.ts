@@ -30,7 +30,6 @@ export default event(
         case "⏯️":
           Pause(guild);
 
-          queue.textChannel?.send(`This action haven't been implemented yet`);
           console.log(`${user.username} play/paused music reacting.`);
           break;
         case "⏭️":

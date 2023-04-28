@@ -6,11 +6,13 @@ export async function Pause(guild: Guild) {
   let queue = Queues.get(guild.id);
   if (!queue || !queue.player) return;
 
+  const player = queue.player;
+
   try {
     if (queue.player.state.status === AudioPlayerStatus.Paused) {
-      queue.player.pause();
+      player.unpause();
     } else {
-      queue.player.unpause();
+      player.pause();
     }
   } catch (error) {
     console.log(`Paused function... `, error);

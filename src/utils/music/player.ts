@@ -2,7 +2,6 @@ import {
   createAudioPlayer,
   AudioPlayerStatus,
   createAudioResource,
-  StreamType,
 } from "@discordjs/voice";
 import { ChatInputCommandInteraction, TextChannel } from "discord.js";
 import { Song, Queues } from "../../types";
@@ -22,9 +21,7 @@ export async function play(
   }
 
   const stream = await YTurl(song.url);
-  const resource = createAudioResource(stream.stream, {
-    inputType: stream.type,
-  });
+  const resource = createAudioResource(stream.stream);
   const player = createAudioPlayer();
   queue?.connection?.subscribe(player);
   player.play(resource);

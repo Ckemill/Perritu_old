@@ -25,7 +25,7 @@ export async function play(
   }
 
   const stream = await YTurl(song.url);
-  const resource = createAudioResource(stream);
+  const resource = createAudioResource(stream.stream);
   const player = createAudioPlayer();
   queue?.connection?.subscribe(player);
   player.play(resource);

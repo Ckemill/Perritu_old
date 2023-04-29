@@ -3,11 +3,11 @@ import { Queues } from "../../../types";
 
 export async function Stop(guild: Guild) {
   let queue = Queues.get(guild.id);
-  if (!queue || !queue.player) return;
+  if (!queue || !queue.player || !queue.message) return;
 
   try {
-    await queue.player.stop();
-    await queue.message?.delete();
+    await queue.message.delete();
+    queue.player.stop();
     Queues.delete(guild.id);
   } catch (error) {
     console.log(`Stop function... `, error);

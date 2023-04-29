@@ -5,7 +5,7 @@ import {
 } from "@discordjs/voice";
 import { ChatInputCommandInteraction, TextChannel } from "discord.js";
 import { Song, Queues } from "../../types";
-import { YTurl } from "../../utils";
+import { YTurl, Skip } from "../../utils";
 import { EmbedBuilder } from "@discordjs/builders";
 
 export async function play(
@@ -25,7 +25,7 @@ export async function play(
   }
 
   const stream = await YTurl(song.url);
-  const resource = createAudioResource(stream.stream);
+  const resource = createAudioResource(stream);
   const player = createAudioPlayer();
   queue?.connection?.subscribe(player);
   player.play(resource);
@@ -58,8 +58,7 @@ export async function play(
   });
   player
     .on(AudioPlayerStatus.Idle, () => {
-      queue?.songs.shift();
-      play(channel, guild, queue!.songs[0]);
+      Skip(guild!);
     })
     .on("error", (error) => console.error(error));
 
@@ -79,7 +78,5 @@ export async function play(
     .then(() => message.react("⏭️"))
     .then(() => message.react("🔀"))
     .then(() => message.react("🔁"))
-    .catch((error) =>
-      console.error("One of the emojis failed to react:", error)
-    );
+    .catch((error) => console.log("One of the emojis failed to react:", error));
 }

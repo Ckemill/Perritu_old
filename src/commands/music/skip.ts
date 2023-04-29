@@ -28,6 +28,7 @@ export default command(meta, async ({ interaction }) => {
       content: `I can't read messages on this channel.`,
     });
   }
+
   Skip(interaction.guild!);
 
   interaction.reply("Skipped to the next song.");

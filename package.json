@@ -41,8 +41,10 @@
     "google-tts-api": "^2.0.2",
     "googleapis": "^118.0.0",
     "jsonwebtoken": "^9.0.0",
+    "libsodium-wrappers": "^0.7.11",
     "play-dl": "^1.9.6",
     "promisify": "^0.0.3",
+    "tweetnacl": "^1.0.3",
     "util": "^0.12.5",
     "ytdl-core": "4.9.1"
   }

@@ -1,10 +1,10 @@
 import { Queue, Queues } from "../../types";
 import {
+  play,
   prefix,
-  checkVoiceChannel,
   YTsearch,
   joinVoice,
-  play,
+  checkVoiceChannel,
 } from "../../utils";
 import { ChannelType } from "discord.js";
 
@@ -37,7 +37,6 @@ export default prefix("play", async ({ args, message }) => {
     };
 
     queueConstruct.songs.push(song);
-
     Queues.set(message.guildId, queueConstruct);
 
     try {

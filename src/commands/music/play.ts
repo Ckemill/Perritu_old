@@ -1,12 +1,12 @@
 import {
   play,
   command,
+  YTsearch,
   joinVoice,
   checkVoiceChannel,
-  YTsearch,
 } from "../../utils";
-import { SlashCommandBuilder } from "discord.js";
-import { Song, Queue, Queues } from "../../types";
+import { ChannelType, SlashCommandBuilder } from "discord.js";
+import { Queue, Queues } from "../../types";
 
 const meta = new SlashCommandBuilder()
   .setName("play")
@@ -30,23 +30,17 @@ export default command(meta, async ({ interaction }) => {
     });
   }
 
-  if (!interaction.channel) {
+  if (interaction.channel?.type != ChannelType.GuildText) {
     return interaction.reply({
       ephemeral: true,
       content: `You can't use this command here.`,
     });
   }
 
-  if (interaction.channel.type != 0) {
-    return interaction.reply({
-      ephemeral: true,
-      content: `I can't read messages on this channel.`,
-    });
-  }
-
   const url = interaction.options.getString("song");
 
-  if (!url) return interaction.reply(`you have to provide an url.`);
+  if (!url)
+    return interaction.reply(`You have to let me know what song to search...`);
 
   const song = await YTsearch(url);
 
